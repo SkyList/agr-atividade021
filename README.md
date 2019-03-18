@@ -48,7 +48,7 @@ $ echo "export CATALINA_HOME="/usr/local/tomcat9"" >> ~/.bashrc
 $ source ~/.bashrc
 ```
 
-> Configurando o acesso externo ao servidor do tomcat
+Configurando o acesso externo ao servidor do tomcat
 
 ```sh
 #configuração do acesso extermo ao tomcat
@@ -59,7 +59,7 @@ $ firewall-cmd --zone=public --permanent --add-port=8080/tcp
 $ firewall-cmd --reload
 ```
 
-> iniciando o servidor do apache
+iniciando o servidor do apache
 
 ```sh
 #iniciar o tomcat
@@ -73,4 +73,97 @@ $ bash /usr/local/tomcat9/bin/startup.sh
 #> Using CLASSPATH: /usr/local/tomcat9/bin/bootstrap.jar:/usr/local/tomcat9/bin/</br>
 #> tomcat-juli.jar</br>
 #> Tomcat started.</br>
+```
+
+configurando tomcat para iniciar com o sistema
+
+```sh
+# adicionando o diretorio tomcat9 ao grupo tomcat
+$ sudo chown -R tomcat: /usr/local/tomcat9
+
+#criando o arquivo de serviço
+$ sudo vi /etc/systemd/system/tomcat.service
+```
+
+cole o seguinte codigo:
+
+```
+[Unit]
+Description=Tomcat 9 servlet container
+After=network.target
+
+[Service]
+Type=forking
+
+User=tomcat
+Group=tomcat
+
+Environment="CATALINA_BASE=/usr/local/tomcat9"
+Environment="CATALINA_HOME=/usr/local/tomcat9"
+
+ExecStart=/usr/local/tomcat9/bin/startup.sh
+ExecStop=/usr/local/tomcat9/bin/shutdown.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+habilite o serviço do tomcat
+
+```sh
+# habilitar
+$ sudo systemctl enable tomcat
+
+# iniciar
+$ sudo systemctl start tomcat
+
+#verificar status
+$ sudo systemctl status tomcat -l
+```
+
+## **instalação do PostgreSQL**
+
+```sh
+#adicionando repositorio do postgre
+$ yum install https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-7-x86_64/pgdg-centos11-11-2.noarch.rpm
+
+#instalação do cliente
+$ yum install postgresql11
+
+#instalação dos servidor
+$ yum install postgresql11-server
+```
+
+configurando postgre para iniciar com o sistema
+
+```sh
+$ /usr/pgsql-11/bin/postgresql-11-setup initdb
+
+$ systemctl enable postgresql-11
+
+$ systemctl start postgresql-11
+```
+
+configurando postgre para aceitar conexões remotas
+
+```sh
+$ sudo vi /var/lib/pgsql/data/postgresql.conf
+```
+
+Com o editor de texto aberto edite na parte area de `CONNECTIONS AND AUTHENTICATION`, troque o `localhost` por `*`.
+
+```
+#------------------------------------------------------------------------------
+# CONNECTIONS AND AUTHENTICATION
+#------------------------------------------------------------------------------
+
+# - Connection Settings -
+
+listen_addresses = '*'     # what IP address(es) to listen on;
+```
+
+salve o arquivo e reinicie o serviço do postgre
+
+```sh
+$ sudo systemctl restart postgresql
 ```
