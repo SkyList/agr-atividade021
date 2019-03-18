@@ -92,6 +92,32 @@ $ yum install postgresql11-server
 
 ```sh
 $ /usr/pgsql-11/bin/postgresql-11-setup initdb
+
 $ systemctl enable postgresql-11
+
 $ systemctl start postgresql-11
+```
+
+> configurando postgre para aceitar conexões remotas
+
+```sh
+$ sudo vim /var/lib/pgsql/data/postgresql.conf
+```
+
+Com o editor de texto aberto edite na parte area de `CONNECTIONS AND AUTHENTICATION`, troque o `localhost` por `*`.
+
+```
+#------------------------------------------------------------------------------
+# CONNECTIONS AND AUTHENTICATION
+#------------------------------------------------------------------------------
+
+# - Connection Settings -
+
+listen_addresses = '*'     # what IP address(es) to listen on;
+```
+
+salve o arquivo e reinicie o serviço do postgre
+
+```sh
+$ sudo systemctl restart postgresql
 ```
