@@ -52,7 +52,9 @@ Configurando o acesso externo ao servidor do tomcat
 
 ```sh
 #configuração do acesso extermo ao tomcat
-$ systemctl start firewalldsystemctl enable firewalld
+$ systemctl start firewalld
+
+$ systemctl enable firewalld
 
 $ firewall-cmd --zone=public --permanent --add-port=8080/tcp
 
@@ -78,6 +80,9 @@ $ bash /usr/local/tomcat9/bin/startup.sh
 configurando tomcat para iniciar com o sistema
 
 ```sh
+# adicionando usuario tomcat
+sudo useradd -m -U -d /usr/local/tomcat9 -s /bin/false tomcat
+
 # adicionando o diretorio tomcat9 ao grupo tomcat
 $ sudo chown -R tomcat: /usr/local/tomcat9
 
@@ -162,7 +167,20 @@ Com o editor de texto aberto edite na parte area de `CONNECTIONS AND AUTHENTICAT
 listen_addresses = '*'     # what IP address(es) to listen on;
 ```
 
-salve o arquivo e reinicie o serviço do postgre
+salve o arquivo e edite o arquivo `pg_hba.conf`, e adicione os hosts com acesso remoto.
+
+```sh
+vi /var/lib/pgsql/11/data/pg_hba.conf
+```
+
+Adicione no final do arquivo
+
+```
+host    all             all              0.0.0.0/0                       md5
+host    all             all              ::/0                            md5
+```
+
+Salve e reinicie o servidor
 
 ```sh
 $ sudo systemctl restart postgresql

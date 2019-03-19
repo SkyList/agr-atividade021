@@ -1,107 +1,106 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Hello World!</title>
-	<style>
-.paypal-button button.large {
-	min-width: 150px;
-}
-
-.paypal-label {
-	margin-left: 30px;
-}
-
-.paypal-input {
-	margin: 0 20px !important;
-	width: 100px !important;
-	height: 25px !important;
-	border-radius: 5px !important;
-	text-align: center !important;
-}
-
-.paypal-button {
-	min-height: 40px;
-}
-
-.textPay {
-	text-align: center;
-	margin: 10px 50px;
-	font-size: 13px;
-	display: block;
-}
-#usd-button form ,
-#brl-button form {
-	margin: 0;
-}
-
-#usd-button img,
-#brl-button img {
-	margin: 20px auto 0 auto;
-	display: block;
-}
-
-</style></h:head>
+    <title>Hello World!</title>
+    <style type="text/css">
+        .ui-datatable-header {
+            height: 50px
+        }
+    </style>
+</h:head>
 <h:body>
-	<h:form>
-		<h:panelGrid columns="2">
-			<h:outputLabel for="name" value="Your Name" />
-			<h:inputText value="#{helloWorldController.name}" />
-			
-			<h:commandButton value="Click me!" action="#{helloWorldController.action}" />
-			<h:panelGroup/>
-			
-			<h:outputText value="#{helloWorldController.label}" />
-		</h:panelGrid>
-	</h:form>
-	
-		<p>Your project is configured! Now, what do you think about donate :)?</p>
-		<div id="brl-button">
-			<img src="http://www.setupmyproject.com/images/flags/ptbr.png" alt="brazilian flag"/> 
-			<p class="textPay">
-				A nossa ideia ?? que voc?? inicie o seu projeto o mais r??pido poss??vel, sem perder tempo configurando frameworks e outros detalhes. Ainda tem muito mais por vir, projetos j?? com templates configurados, mais op????es de plugins dentro dos frameworks etc. Entendemos que nosso projeto realmente faz voc?? economizar tempo, ent??o, se for poss??vel, gostar??amos que voc?? nos desse uma ajuda fazendo uma doa????o.  									
-			</p>
-			<p class="textPay">
-				A nossa conta do Paypal ?? brasileira e, se a sua conta no Paypal tamb??m for brasileira, por conta das leis do nosso pa??s, temos que pedir que voc?? doe em reais. Ao lado tem a nossa sugest??o :).
-			</p>
-			<form method="post" action="https://www.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top">
-					<div class="hide" id="errorBox"></div>
-						<input type="hidden" name="button" value="donate"/>
-						<input type="hidden" name="item_name" value="Configured project"/>						
-					
-						<input type="hidden" name="env" value=""/>
-						<input type="hidden" name="currency_code" value="BRL"/>
-						<input type="hidden" name="lc" value="pt_BR"/>
-						<input type="hidden" name="cmd" value="_donations"/>
-						<input type="hidden" name="business" value="DVGVTVC3E9TAN"/>
-						<input type="hidden" name="bn" value="JavaScriptButton_donate"/>
-						<button type="submit" class="paypal-button large">Doar</button>
-				</form>					
-			
-			
-		</div>
-		<div id="usd-button">
-			<img src="http://www.setupmyproject.com/images/flags/usen.png" alt="non brazilian flag"/>
-			<p class="textPay">
-				Our main goal is that you can start your project as fast as possible, without wasting time setting up frameworks and other details. There are a lot of things to come like project with already configured templates, more options of plugins for each framework etc. We really think that our project saves your time, so, if you can, we would like that you to contribute with us making a donation. 
-			</p>
-			<p class="textPay">
-				If you want to donate in dollar, use this button :).				
-			</p>
-			<form method="post" action="https://www.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top">
-					<div class="hide" id="errorBox"></div>
-						<input type="hidden" name="button" value="donate"/>
-						<input type="hidden" name="item_name" value="Configured project"/>
-					
-						<input type="hidden" name="env" value=""/>
-						<input type="hidden" name="currency_code" value="USD"/>
-						<input type="hidden" name="lc" value="en_US"/>
-						<input type="hidden" name="cmd" value="_donations"/>
-						<input type="hidden" name="business" value="DVGVTVC3E9TAN"/>
-						<input type="hidden" name="bn" value="JavaScriptButton_donate"/>
-						<button type="submit" class="paypal-button large">Donate</button>
-			</form>			
-		</div>			</h:body>
+
+    <div style="display: flex; flex-direction: row;">
+        <div style="flex: 2; margin: 24px;">
+            <h:form id="dataForm">
+                <p:dataTable id="contactsTable"
+                             var="item"
+                             reflow="true"
+                             cellSeparator="false"
+                             style="border-width: 0;"
+                             value="#{contactController.contacts}"
+                             emptyMessage="Nenhum contato adicionado!">
+                    <f:facet name="header">
+                        Contatos
+
+                        <p:commandButton id="toggler" type="button" value="Colunas" style="float:right"
+                                         icon="pi pi-align-justify"/>
+                        <p:columnToggler datasource="contactsTable" trigger="toggler"/>
+                    </f:facet>
+
+                    <p:column headerText="Id">
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Nome">
+                        <h:outputText value="#{item.name} - #{item.company}"/>
+                    </p:column>
+
+                    <p:column headerText="Telefone">
+                        <h:outputText value="#{item.phone}"/>
+                    </p:column>
+
+                    <p:column headerText="Ações">
+                        <p:commandButton value="editar"
+                                         update="@all"
+                                         icon="pi pi-pencil"
+                                         action="#{contactController.edit(item)}"/>
+
+                        <p:commandButton value="remover"
+                                         update=":dataForm"
+                                         icon="pi pi-times-circle"
+                                         action="#{contactController.delete(item)}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <div style="flex: 1; margin: 24px;">
+            <div>
+                <h:form rendered="#{!contactController.edit}" id="saveForm">
+                    <h3>Adicionar Contato</h3>
+                    <p:panelGrid columns="2">
+
+                        <label for="nome">Nome</label>
+                        <p:inputText id="nome" value="#{contactController.contact.name}"/>
+
+                        <label for="company">Companhia</label>
+                        <p:inputText id="company" value="#{contactController.contact.company}"/>
+
+                        <label for="phone">Telefone</label>
+                        <p:inputMask id="phone" mask="(99) 99999-9999" value="#{contactController.contact.phone}"/>
+
+                        <p:commandButton value="salvar" update=":dataForm" action="#{contactController.add}"/>
+
+                    </p:panelGrid>
+                </h:form>
+            </div>
+
+            <div>
+                <h:form rendered="#{contactController.edit}" id="editForm">
+                    <h3>Editar Contato</h3>
+                    <p:panelGrid columns="2">
+
+                        <label for="edit-nome">Nome</label>
+                        <p:inputText id="edit-nome" value="#{contactController.contact.name}"/>
+
+                        <label for="edit-company">Companhia</label>
+                        <p:inputText id="edit-company" value="#{contactController.contact.company}"/>
+
+                        <label for="edit-phone">Telefone</label>
+                        <p:inputMask id="edit-phone" mask="(99) 99999-9999" value="#{contactController.contact.phone}"/>
+
+                        <p:commandButton value="salvar" update="@all" action="#{contactController.saveEdit}"/>
+
+                    </p:panelGrid>
+                </h:form>
+            </div>
+        </div>
+    </div>
+</h:body>
 </html>
