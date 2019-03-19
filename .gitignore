@@ -1,0 +1,5 @@
+#ignora o build do projeto
+agenda/target
+
+#ignora configurações do intellij
+.ideia
