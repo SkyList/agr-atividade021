@@ -126,6 +126,51 @@ $ sudo systemctl start tomcat
 $ sudo systemctl status tomcat -l
 ```
 
+configurando a web interface
+
+```sh
+# abra o arquivo com o editor de sua preferencia
+$ cd /usr/local/tomcat9/conf/tomcat-users.xml
+```
+
+Acrescente as seguintes tags, entr as tags `<tomcat-users>...</tomcat-users>`
+
+```html
+<role rolename="admin-gui" />
+<role rolename="manager-gui" />
+<user username="admin" password="password" roles="admin-gui,manager-gui" />
+```
+
+abra o arquivo context.xhtml e commente a linha 19 e 20, ela deve ficar assim
+
+```sh
+$ cd /usr/local/tomcat9/webapps/manager/META-INF/context.xml
+```
+
+```html
+<Context antiResourceLocking="false" privileged="true">
+	<!--
+  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+         allow="127\.\d+\.\d+\.\d+|::1|0000:1" />
+-->
+</Context>
+```
+
+abra o arquivo context.xhtml e commente a linha 19 e 20, ela deve ficar assim
+
+```sh
+$ cd /usr/local/tomcat9/webapps/host-manager/META-INF/context.xml
+```
+
+```html
+<Context antiResourceLocking="false" privileged="true">
+	<!--
+  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+         allow="127\.\d+\.\d+\.\d+|::1|0000:1" />
+-->
+</Context>
+```
+
 ## **instalação do PostgreSQL**
 
 ```sh
@@ -185,3 +230,13 @@ Salve e reinicie o servidor
 ```sh
 $ sudo systemctl restart postgresql
 ```
+
+## **Deploy no servidor**
+
+### Para publicar basta:
+
+-   Acessar o ip do servidor `http://[IP_ADDRES]:8080/manager/`, digitar sua senha, no caso `password`.
+-   Gerar o `projectname.war`
+-   configurar o contexto da aplicação
+-   Na opção `WAR file to deploy`, clicar em escolher arquivo e navegar ate o `projectname.war`
+-   clicar em Deploy
